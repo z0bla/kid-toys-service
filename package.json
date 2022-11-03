@@ -1,0 +1,22 @@
+{
+  "name": "kid-toys-service",
+  "version": "1.0.0",
+  "description": "Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z0bla/kid-toys-service.git"
+  },
+  "author": "SyntaxError",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/z0bla/kid-toys-service/issues"
+  },
+  "homepage": "https://github.com/z0bla/kid-toys-service#readme",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
