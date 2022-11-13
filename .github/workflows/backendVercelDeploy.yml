@@ -8,13 +8,13 @@ on:
     branches:
       - main
 jobs:
-  CypressTest:
+  JestTest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
   Deploy-Production:
-    needs: CypressTest
+    needs: JestTest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
