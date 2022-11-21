@@ -12,8 +12,9 @@
       "dest": "index.js"
     }
   ],
-  "github": {
-    "enabled": false,
-    "silent": true
+  "git": {
+    "deploymentEnabled": {
+      "main": false
+    }
   }
 }
