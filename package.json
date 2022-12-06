@@ -4,6 +4,7 @@
   "description": "Service",
   "main": "index.js",
   "scripts": {
+    "start": "docker compose up -d && node index.js ",
     "test": "jest",
     "update": "npx npm-check-updates -u --target minor && npm install"
   },
