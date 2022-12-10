@@ -1,4 +1,5 @@
-const express = require("express");
+import express from "express";
+
 const app = express();
 const port = "5000";
 
@@ -7,5 +8,5 @@ app.get("/*", (req, res) => {
 });
 
 app.listen(port, () => {
-  "Server is listening...";
+  console.log("Server is listening...");
 });
