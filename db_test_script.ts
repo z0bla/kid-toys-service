@@ -3,7 +3,30 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  //const user = await prisma.user.deleteMany();
+  const users = await prisma.user.createMany({
+    data: [
+      {
+        firstName: "Dalibor",
+        lastName: "Blazanovic",
+      },
+      {
+        firstName: "Dejan",
+        lastName: "Blazanovic",
+      },
+      {
+        firstName: "Nemanja",
+        lastName: "Vasic",
+      },
+      {
+        firstName: "Goran",
+        lastName: "Stevanovic",
+      },
+    ],
+  });
+  console.log(users);
+
+  const allUsers = await prisma.user.findMany();
+  console.log(allUsers);
 }
 
 main()
