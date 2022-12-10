@@ -4,6 +4,7 @@
   "description": "Service",
   "main": "index.js",
   "scripts": {
+    "dev": "./start_db.sh && npx nodemon index.ts",
     "test": "jest",
     "update": "npx npm-check-updates -u --target minor && npm install"
   },
