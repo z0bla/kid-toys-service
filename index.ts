@@ -15,8 +15,9 @@ async function connectDb() {
 
 connectDb();
 
-app.get("/*", (req, res) => {
-  res.end("Uspjelo Nukrec!");
+app.get("/*", async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users).end("Prisma running!");
 });
 
 app.listen(port, () => {
