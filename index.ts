@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   //   res.json("users").end("Prisma is running");
   // });
   const users = prisma.user.findMany();
-  res.end(users);
+  res.json(users).end();
 });
 
 app.listen(port, () => {
