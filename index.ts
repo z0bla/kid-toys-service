@@ -24,8 +24,20 @@ app.get("/", (req, res) => {
   // prisma.user.findMany().then((users) => {
   //   res.json("users").end("Prisma is running");
   // });
-  const users = prisma.user.findMany();
-  res.json(users).end();
+  prisma.user
+    .create({
+      data: {
+        firstName: "D",
+        lastName: "Blazanovic",
+      },
+    })
+    .then((user) => {
+      console.log("user created");
+    });
+
+  // const users = prisma.user.findMany();
+  // res.json(users).end();
+  res.end("user created");
 });
 
 app.listen(port, () => {
