@@ -22,7 +22,7 @@ connectDb();
 
 app.get("/", (req, res) => {
   prisma.user.findMany().then((users) => {
-    res.json(users).end("Prisma is running");
+    res.json("users").end("Prisma is running");
   });
 });
 
