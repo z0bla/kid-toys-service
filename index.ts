@@ -24,16 +24,14 @@ app.get("/", (req, res) => {
   // prisma.user.findMany().then((users) => {
   //   res.json("users").end("Prisma is running");
   // });
-  prisma.user
-    .create({
-      data: {
-        firstName: "D",
-        lastName: "Blazanovic",
-      },
-    })
-    .then((user) => {
-      console.log("user created");
-    });
+  prisma.User.create({
+    data: {
+      firstName: "D",
+      lastName: "Blazanovic",
+    },
+  }).then(() => {
+    console.log("user created");
+  });
 
   // const users = prisma.user.findMany();
   // res.json(users).end();
