@@ -33,6 +33,9 @@ app.get("/", (req, res) => {
     })
     .then(() => {
       console.log("user created");
+    })
+    .catch((err) => {
+      res.end(`Erro: ${err}`);
     });
 
   // const users = prisma.user.findMany();
