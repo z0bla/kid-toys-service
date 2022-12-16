@@ -32,15 +32,14 @@ app.get("/", (req, res) => {
       },
     })
     .then(() => {
-      console.log("user created");
+      res.end("user created");
     })
     .catch((err) => {
-      res.end(`Erro: ${err}`);
+      res.end(`Error: ${err}`);
     });
 
   // const users = prisma.user.findMany();
   // res.json(users).end();
-  res.end("user created");
 });
 
 app.listen(port, () => {
