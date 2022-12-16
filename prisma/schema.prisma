@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,8 +8,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(uuid())
-  firstName String
-  lastName String
+model user {
+  id        String  @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  firstName String? @default("")
+  lastName  String? @default("")
 }
