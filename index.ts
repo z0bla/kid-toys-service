@@ -15,15 +15,7 @@ async function connectDb() {
 
 connectDb();
 
-// app.get("/", async (req, res) => {
-//   const users = await prisma.user.findMany();
-//   res.json(users).end("Prisma is running!");
-// });
-
 app.get("/", (req, res) => {
-  // prisma.user.findMany().then((users) => {
-  //   res.json("users").end("Prisma is running");
-  // });
   prisma.user
     .create({
       data: {
@@ -37,9 +29,6 @@ app.get("/", (req, res) => {
     .catch((err) => {
       res.end(`Error: ${err}`);
     });
-
-  // const users = prisma.user.findMany();
-  // res.json(users).end();
 });
 
 app.get("/delete", async (req, res) => {
