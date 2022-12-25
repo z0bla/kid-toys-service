@@ -8,9 +8,9 @@ const logtail = new Logtail("fLhHrFNbdBe9DFFqSyp9RZZk");
 const destinations =
   process.env.NODE_ENV === "production"
     ? [new winston.transports.Console(), new LogtailTransport(logtail)]
-    : [new winston.transports.Console(), new LogtailTransport(logtail)];
+    : [new winston.transports.Console()];
 
-module.exports = winston.createLogger({
+export default winston.createLogger({
   level: process.env.WINSTON_LOG_LEVEL || "info",
   // optional: if we use same Logtail for both frontend and backend
   defaultMeta: {
