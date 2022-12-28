@@ -3,7 +3,7 @@ const { combine, timestamp, json, errors } = winston.format;
 const { Logtail } = require("@logtail/node");
 const { LogtailTransport } = require("@logtail/winston");
 
-const logtail = new Logtail("fLhHrFNbdBe9DFFqSyp9RZZk");
+const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
 
 const destinations =
   process.env.NODE_ENV === "production"
