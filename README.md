@@ -24,5 +24,5 @@ To update dependencies
 Create .env file with one-line 
 `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"`
 
-### `docker compose up`
-To start database in docker
+### `./start_db.sh`
+Run the script to start development database 
