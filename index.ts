@@ -3,7 +3,7 @@ import prisma from "./prisma";
 import logger from "./logger";
 
 const app = express();
-const port = "5000";
+//const port = "5000";
 
 async function connectDb() {
   try {
@@ -43,3 +43,4 @@ app.get("/", async (req, res) => {
 //app.listen(port, () => {
 //  console.log("Server is listening...");
 //});
+const server = app.listen(3000);
