@@ -30,15 +30,15 @@ app.get("/", async (req, res) => {
   //   .catch((err) => {
   //     res.end(`Error: ${err}`);
   //   });
-  const users = await prisma.user.findMany();
-  logger.info(users);
-  res.json(users).end();
+  //const users = await prisma.user.findMany();
+  //logger.info(users);
+  //res.json(users).end();
 });
 
-app.delete("/", async (req, res) => {
-  await prisma.user.deleteMany({});
-  res.end("All records deleted");
-});
+//app.delete("/", async (req, res) => {
+//  await prisma.user.deleteMany({});
+//  res.end("All records deleted");
+//});
 
 app.listen(port, () => {
   console.log("Server is listening...");
