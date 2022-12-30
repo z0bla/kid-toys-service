@@ -3,7 +3,7 @@ import prisma from "./prisma";
 import logger from "./logger";
 
 const app = express();
-//const port = "5000";
+const port = "5000";
 
 async function connectDb() {
   try {
@@ -15,9 +15,6 @@ async function connectDb() {
 }
 
 connectDb();
-
-
-const server = app.listen(3000);
 
 //app.get("/", async (req, res) => {
   // prisma.user
@@ -43,6 +40,6 @@ const server = app.listen(3000);
 //  res.end("All records deleted");
 //});
 
-//app.listen(port, () => {
-//  console.log("Server is listening...");
-//});
+app.listen(port, () => {
+  console.log("Server is listening...");
+});
