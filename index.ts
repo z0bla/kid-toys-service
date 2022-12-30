@@ -16,6 +16,10 @@ async function connectDb() {
 
 connectDb();
 
+app.get('/', (req, res) => {
+  res.json({message: 'alive'});
+});
+
 //app.get("/", async (req, res) => {
   // prisma.user
   //   .create({
