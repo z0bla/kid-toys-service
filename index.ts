@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
   res.json(users).end();
 });
 
-app.get("/delete", async (req, res) => {
+app.delete("/", async (req, res) => {
   await prisma.user.deleteMany({});
   res.end("All records deleted");
 });
