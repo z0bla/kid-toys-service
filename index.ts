@@ -16,7 +16,10 @@ async function connectDb() {
 
 connectDb();
 
-app.get("/", async (req, res) => {
+
+const server = app.listen(3000);
+
+//app.get("/", async (req, res) => {
   // prisma.user
   //   .create({
   //     data: {
@@ -33,7 +36,7 @@ app.get("/", async (req, res) => {
   //const users = await prisma.user.findMany();
   //logger.info(users);
   //res.json(users).end();
-});
+//});
 
 //app.delete("/", async (req, res) => {
 //  await prisma.user.deleteMany({});
@@ -43,4 +46,3 @@ app.get("/", async (req, res) => {
 //app.listen(port, () => {
 //  console.log("Server is listening...");
 //});
-const server = app.listen(3000);
