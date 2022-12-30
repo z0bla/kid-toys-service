@@ -40,6 +40,6 @@ app.get("/", async (req, res) => {
 //  res.end("All records deleted");
 //});
 
-app.listen(port, () => {
-  console.log("Server is listening...");
-});
+//app.listen(port, () => {
+//  console.log("Server is listening...");
+//});
