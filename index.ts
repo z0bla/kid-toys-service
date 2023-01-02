@@ -1,6 +1,7 @@
 import express from "express";
 import prisma from "./prisma";
 import logger from "./logger";
+import { resolve } from "path";
 
 const app = express();
 const port = "3000";
@@ -17,6 +18,9 @@ async function connectDb() {
 connectDb();
 
 async function main() {
+  app.get('/', function(req, res){
+    res.render('index.ejs');
+  });
   // app.get('/',async(req,res) =>{
   //   const users = await prisma.user.findMany()
   //   res.json(users)
