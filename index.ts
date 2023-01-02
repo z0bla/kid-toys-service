@@ -19,7 +19,7 @@ connectDb();
 
 async function main() {
   app.get('/', function(req, res){
-    res.render('index.ejs');
+    res.render('index.ts');
   });
   // app.get('/',async(req,res) =>{
   //   const users = await prisma.user.findMany()
