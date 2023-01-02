@@ -22,10 +22,10 @@ async function main() {
   //   res.render('index.ts');
   // });
 
-  // app.get('/',async(req,res) =>{
-  //   const users = await prisma.user.findMany()
-  //   res.json(users)
-  // })
+  app.get('/',async(req,res) =>{
+    const users = await prisma.user.findMany()
+    res.json(users)
+  })
 }
 
 main()
