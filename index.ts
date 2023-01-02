@@ -16,13 +16,6 @@ async function connectDb() {
 
 connectDb();
 
-app.use(function (req,res){
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
-  )
-})
-
 async function main() {
   // app.get('/',async(req,res) =>{
   //   const users = await prisma.user.findMany()
