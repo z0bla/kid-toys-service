@@ -2,7 +2,7 @@
   "name": "kid-toys-service",
   "version": "1.0.0",
   "description": "Service",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "dev": "nodemon index.ts",
     "test": "jest",
