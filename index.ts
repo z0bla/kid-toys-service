@@ -21,6 +21,12 @@ async function main() {
   app.get('/', function(req, res){
     res.render('index.ts');
   });
+
+  app.use(express.static('./', {
+    setHeaders: function(res) {
+      res.set("Content-Security-Policy", "default-src 'self'");
+    }
+  }));
   // app.get('/',async(req,res) =>{
   //   const users = await prisma.user.findMany()
   //   res.json(users)
