@@ -17,7 +17,10 @@ async function connectDb() {
 connectDb();
 
 async function main() {
-  
+  app.get('/',async(req,res) =>{
+    const users = await prisma.user.findMany()
+    res.json(users)
+  })
 }
 
 main()
