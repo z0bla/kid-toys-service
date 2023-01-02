@@ -3,7 +3,7 @@ import prisma from "./prisma";
 import logger from "./logger";
 
 const app = express();
-const port = "5000";
+const port = "3000";
 
 async function connectDb() {
   try {
@@ -16,22 +16,22 @@ async function connectDb() {
 
 connectDb();
 
-async function main() {
-  app.get('/',async(req,res) =>{
-    const users = await prisma.user.findMany()
-    res.json(users)
-  })
-}
+// async function main() {
+//   app.get('/',async(req,res) =>{
+//     const users = await prisma.user.findMany()
+//     res.json(users)
+//   })
+// }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async(e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+// main()
+//   .then(async () => {
+//     await prisma.$disconnect()
+//   })
+//   .catch(async(e) => {
+//     console.error(e)
+//     await prisma.$disconnect()
+//     process.exit(1)
+//   })
 
 app.listen(port, () => {
   console.log("Server is listening...");
