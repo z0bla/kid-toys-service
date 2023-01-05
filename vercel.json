@@ -6,6 +6,7 @@
       "dest": "index.ts"
     }
   ],
+  "outputDirectory": "build",
   "git": {
     "deploymentEnabled": {
       "main": false,
