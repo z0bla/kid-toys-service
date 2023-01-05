@@ -4,6 +4,7 @@
   "description": "Service",
   "main": "index.ts",
   "scripts": {
+    "build": "npx ts-node index.ts",
     "dev": "nodemon index.ts",
     "test": "jest",
     "update": "npx npm-check-updates -u --target minor && npm install"
