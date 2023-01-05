@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "index.ts",
-      "use": "@now/node"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -14,7 +8,8 @@
   ],
   "git": {
     "deploymentEnabled": {
-      "main": false
+      "main": false,
+      "test": false
     }
   }
 }
