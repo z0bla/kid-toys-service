@@ -1,15 +1,21 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "index.ts",
+      "use": "@now/node"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "index.ts"
     }
   ],
-  "outputDirectory": "build",
   "git": {
     "deploymentEnabled": {
       "main": false,
+      "development": false,
       "test": false
     }
   }
