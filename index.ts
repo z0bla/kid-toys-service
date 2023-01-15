@@ -17,22 +17,22 @@ async function connectDb() {
 connectDb();
 
 app.get("/", async (req, res) => {
-  prisma.user
-    .create({
-      data: {
-        firstName: "D",
-        lastName: "Blazanovic",
-      },
-    })
-    .then(() => {
-      res.end("user created");
-    })
-    .catch((err) => {
-      res.end(`Error: ${err}`);
-    });
-  // const users = await prisma.user.findMany();
-  // logger.info(users);
-  // res.json(users).end();
+  // prisma.user
+  //   .create({
+  //     data: {
+  //       firstName: "D",
+  //       lastName: "Blazanovic",
+  //     },
+  //   })
+  //   .then(() => {
+  //     res.end("user created");
+  //   })
+  //   .catch((err) => {
+  //     res.end(`Error: ${err}`);
+  //   });
+  const users = await prisma.user.findMany();
+  logger.info(users);
+  res.json(users).end();
 });
 
 app.get("/delete", async (req, res) => {
