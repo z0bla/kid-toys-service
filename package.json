@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.ts",
     "test": "jest",
-    "update": "npx npm-check-updates -u --target minor && npm install"
+    "update": "npx npm-check-updates -u --target minor && npm install",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
