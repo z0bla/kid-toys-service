@@ -30,9 +30,12 @@ app.get("/", async (req, res) => {
   //   .catch((err) => {
   //     res.end(`Error: ${err}`);
   //   });
-  const users = await prisma.user.findMany();
-  logger.info(users);
-  res.json(users).end();
+
+  // const users = await prisma.user.findMany();
+  // logger.info(users);
+  // res.json(users).end();
+
+  res.end("hello from kid-toys-service");
 });
 
 app.get("/delete", async (req, res) => {
