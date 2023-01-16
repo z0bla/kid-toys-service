@@ -17,20 +17,6 @@ async function connectDb() {
 connectDb();
 
 app.get("/", async (req, res) => {
-  // prisma.user
-  //   .create({
-  //     data: {
-  //       firstName: "D",
-  //       lastName: "Blazanovic",
-  //     },
-  //   })
-  //   .then(() => {
-  //     res.end("user created");
-  //   })
-  //   .catch((err) => {
-  //     res.end(`Error: ${err}`);
-  //   });
-
   try {
     const users = await prisma.user.findMany();
     logger.info(users);
@@ -39,6 +25,23 @@ app.get("/", async (req, res) => {
     logger.error(e);
     res.end("Error occurred: " + e);
   }
+});
+
+app.get("/add", async (req, res) => {
+  prisma.user
+    .create({
+      data: {
+        firstName: "D",
+        lastName: "Blazanovic",
+      },
+    })
+    .then(() => {
+      res.end("user created");
+    })
+    .catch((err) => {
+      logger.error(err);
+      res.end(`Error: ${err}`);
+    });
 });
 
 app.get("/delete", async (req, res) => {
