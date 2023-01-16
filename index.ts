@@ -9,8 +9,8 @@ async function connectDb() {
   try {
     await prisma.$connect();
     logger.info("Database connected");
-  } catch (err) {
-    logger.error("Error connectig to database: ", err);
+  } catch (error) {
+    logger.error("Error connecting to database: ", error);
   }
 }
 
@@ -21,9 +21,9 @@ app.get("/", async (req, res) => {
     const users = await prisma.user.findMany();
     logger.info(users);
     res.json(users).end();
-  } catch (e) {
-    logger.error(e);
-    res.end("Error occurred: " + e);
+  } catch (error) {
+    logger.error(error);
+    res.end("Error occurred: " + error);
   }
 });
 
@@ -38,9 +38,9 @@ app.get("/add", async (req, res) => {
     .then(() => {
       res.end("user created");
     })
-    .catch((err) => {
-      logger.error(err);
-      res.end(`Error: ${err}`);
+    .catch((error) => {
+      logger.error(error);
+      res.end(`Error: ${error}`);
     });
 });
 
