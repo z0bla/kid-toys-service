@@ -31,11 +31,14 @@ app.get("/", async (req, res) => {
   //     res.end(`Error: ${err}`);
   //   });
 
-  const users = await prisma.user.findMany();
-  logger.info(users);
-  res.json(users).end();
-
-  res.end("hello from kid-toys-service");
+  try {
+    const users = await prisma.user.findMany();
+    logger.info(users);
+    res.json(users).end();
+  } catch (e) {
+    logger.error(e);
+    res.end("Error occurred: " + e);
+  }
 });
 
 app.get("/delete", async (req, res) => {
