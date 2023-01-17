@@ -50,5 +50,5 @@ app.get("/delete", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Server is listening...");
+  console.log(`Server listening on port ${port}`);
 });
