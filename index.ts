@@ -27,28 +27,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/add", async (req, res) => {
-  prisma.user
-    .create({
-      data: {
-        firstName: "D",
-        lastName: "Blazanovic",
-      },
-    })
-    .then(() => {
-      res.end("user created");
-    })
-    .catch((error) => {
-      logger.error(error);
-      res.end(`Error: ${error}`);
-    });
-});
-
-app.get("/delete", async (req, res) => {
-  await prisma.user.deleteMany({});
-  res.end("All records deleted");
-});
-
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
