@@ -6,6 +6,12 @@
       "use": "@now/node"
     }
   ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "dest": "dist/index.js"
+    }
+  ],
   "git": {
     "deploymentEnabled": {
       "main": false
