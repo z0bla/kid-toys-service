@@ -9,37 +9,24 @@ async function connectDb() {
   try {
     await prisma.$connect();
     logger.info("Database connected");
-  } catch (err) {
-    logger.error("Error connectig to database: ", err);
+  } catch (error) {
+    logger.error("Error connecting to database: ", error);
   }
 }
 
 connectDb();
 
 app.get("/", async (req, res) => {
-  // prisma.user
-  //   .create({
-  //     data: {
-  //       firstName: "D",
-  //       lastName: "Blazanovic",
-  //     },
-  //   })
-  //   .then(() => {
-  //     res.end("user created");
-  //   })
-  //   .catch((err) => {
-  //     res.end(`Error: ${err}`);
-  //   });
-  const users = await prisma.user.findMany();
-  logger.info(users);
-  res.json(users).end();
-});
-
-app.get("/delete", async (req, res) => {
-  await prisma.user.deleteMany({});
-  res.end("All records deleted");
+  try {
+    const users = await prisma.user.findMany();
+    logger.info(users);
+    res.json(users).end();
+  } catch (error) {
+    logger.error(error);
+    res.end("Error occurred: " + error);
+  }
 });
 
 app.listen(port, () => {
-  console.log("Server is listening...");
+  console.log(`Server listening on port ${port}`);
 });
