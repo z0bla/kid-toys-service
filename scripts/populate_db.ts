@@ -8,19 +8,10 @@ async function main() {
       {
         firstName: "Dalibor",
         lastName: "Blazanovic",
-      },
-      {
-        firstName: "Dejan",
-        lastName: "Blazanovic",
-      },
-      {
-        firstName: "Nemanja",
-        lastName: "Vasic",
-      },
-      {
-        firstName: "Goran",
-        lastName: "Stevanovic",
-      },
+        email: "dak@g.com",
+        password: "aligator123"
+
+      }
     ],
   });
   console.log(users);

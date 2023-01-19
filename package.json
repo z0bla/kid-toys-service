@@ -4,7 +4,7 @@
   "description": "Service",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon index.ts",
+    "dev": "nodemon src/index.ts",
     "test": "jest",
     "update": "npx npm-check-updates -u --target minor && npm install",
     "build": "tsc -p ."
