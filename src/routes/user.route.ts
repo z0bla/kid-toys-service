@@ -48,7 +48,7 @@ router.post("/register", async (req, res) => {
     logger.info("User created: " + user);
     res.status(201).json({
       status: "success",
-      message: "User created",
+      message: "User created successfully",
       data: user,
     });
   } catch (error) {
