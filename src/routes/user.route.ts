@@ -10,7 +10,7 @@ router.post("/register", async (req, res) => {
   try {
     const { error } = userSchema.validate(req.body);
     if (error) {
-      logger.error("Validation error:", error.details[0].message);
+      logger.error("Validation error: " + error.details[0].message);
       res.status(400).json({
         status: "error",
         message: error.details[0].message,
@@ -44,7 +44,7 @@ router.post("/register", async (req, res) => {
         role: req.body.role,
       },
     });
-    logger.info("User created:", user);
+    logger.info("User created: " + user);
     res.status(201).json({
       status: "success",
       message: "User created",
