@@ -59,7 +59,7 @@ describe("User Registration", () => {
 
       expect(res.statusCode).toBe(409);
 
-      prisma.user.delete({
+      await prisma.user.delete({
         where: {
           email: "test@test.com",
         },
