@@ -3,6 +3,7 @@ import userSchema from "../models/user.model";
 import bcrypt from "bcryptjs";
 import prisma from "../utils/prisma";
 import logger from "../utils/logger";
+import { UserAlreadyExistsException } from "../utils/exceptions";
 
 const router = Router();
 
@@ -24,12 +25,7 @@ router.post("/register", async (req, res) => {
       },
     });
     if (existingUser) {
-      logger.error("User already exists");
-      res.status(409).json({
-        status: "error",
-        message: "User already exists",
-      });
-      return;
+      throw new UserAlreadyExistsException();
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
@@ -50,6 +46,12 @@ router.post("/register", async (req, res) => {
       message: "User created successfully",
     });
   } catch (error) {
+    if (error instanceof UserAlreadyExistsException) {
+      res.status(409).json(error);
+      logger.error(error);
+      return;
+    }
+
     logger.error("Internal server error");
     res.status(500).json({
       status: "error",
