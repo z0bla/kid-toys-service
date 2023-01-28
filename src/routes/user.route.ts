@@ -9,7 +9,6 @@ const router = Router();
 router.post("/register", async (req, res) => {
   try {
     const { error } = userSchema.validate(req.body);
-    console.log(req.body);
     if (error) {
       logger.error("Validation error: " + error.details[0].message);
       res.status(400).json({
