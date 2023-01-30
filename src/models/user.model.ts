@@ -21,5 +21,6 @@ export interface User {
   phoneNumber?: string | null;
   address?: string | null;
   email: string;
+  password: string;
   role: string;
 }
