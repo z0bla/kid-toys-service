@@ -32,7 +32,7 @@ router.post("/register", async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof UserAlreadyExistsException) {
-      res.status(409).json(error);
+      res.status(409);
       logger.error(error);
       return;
     }
