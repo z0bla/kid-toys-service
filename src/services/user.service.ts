@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import prisma from "../utils/prisma";
 import { User } from "../models/user.model";
 
+const saltRounds = 12;
+
 export async function getUserByEmail(email: string): Promise<User | null> {
   const user = (await prisma.user.findUnique({
     where: {
@@ -17,7 +19,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 }
 
 export async function createUser(user: User): Promise<User> {
-  const hashedPassword = await bcrypt.hash(user.password, 12);
+  const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
   const newUser = (await prisma.user.create({
     data: {
