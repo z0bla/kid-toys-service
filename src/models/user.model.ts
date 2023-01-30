@@ -15,9 +15,11 @@ export const userSchema = Joi.object({
 });
 
 export interface User {
-  firstName?: string;
-  lastName?: string;
-  phoneNumber?: string;
-  address?: string;
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  phoneNumber?: string | null;
+  address?: string | null;
   email: string;
+  role: string;
 }
