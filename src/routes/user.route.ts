@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import userSchema from "../models/user.model";
 import bcrypt from "bcryptjs";
 import prisma from "../utils/prisma";
@@ -7,7 +7,7 @@ import { UserAlreadyExistsException } from "../utils/exceptions";
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req: Request, res: Response) => {
   try {
     const { error } = userSchema.validate(req.body);
     if (error) {
