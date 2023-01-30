@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
-import userSchema from "../models/user.model";
-import bcrypt from "bcryptjs";
-import prisma from "../utils/prisma";
+import { userSchema, User } from "../models/user.model";
+import { getUserByEmail, createUser } from "../services/user.service";
 import logger from "../utils/logger";
 import { UserAlreadyExistsException } from "../utils/exceptions";
 
@@ -19,27 +18,13 @@ router.post("/register", async (req: Request, res: Response) => {
       return;
     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email: req.body.email,
-      },
-    });
+    const existingUser = await getUserByEmail(req.body.email);
     if (existingUser) {
       throw new UserAlreadyExistsException();
     }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    const user = await prisma.user.create({
-      data: {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        email: req.body.email,
-        password: hashedPassword,
-        role: req.body.role,
-      },
-    });
+    const user = await createUser(req.body);
+
     logger.info("User created: " + user);
     res.status(201).json({
       status: "success",
