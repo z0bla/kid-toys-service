@@ -18,9 +18,14 @@ export interface User {
   id: number;
   firstName?: string | null;
   lastName?: string | null;
-  phoneNumber?: string | null;
+  phoneNumber?: number | null;
   address?: string | null;
   email: string;
   password: string;
-  role: string;
+  role: Role;
+}
+
+enum Role {
+  admin = "ADMIN",
+  user = "USER",
 }
