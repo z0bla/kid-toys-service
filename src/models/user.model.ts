@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const userSchema = Joi.object({
+export const userSchema = Joi.object({
   firstName: Joi.string().max(45),
   lastName: Joi.string().max(45),
   phoneNumber: Joi.number(),
@@ -14,4 +14,10 @@ const userSchema = Joi.object({
   role: Joi.string(),
 });
 
-export default userSchema;
+export interface User {
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  address?: string;
+  email: string;
+}
