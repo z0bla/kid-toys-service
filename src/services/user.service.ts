@@ -12,11 +12,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
     },
   })) as User;
 
-  if (user) {
-    return user;
-  } else {
-    return null;
-  }
+  return user ?? null;
 }
 
 export async function createUser(user: User): Promise<User> {
