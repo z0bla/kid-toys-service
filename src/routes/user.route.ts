@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 
 import { userSchema } from "../models/user.model";
 import { createUser, getUserByEmail } from "../services/user.service";
+import { STATUS_CODES } from "../utils/constants";
 import { UserAlreadyExistsException } from "../utils/exceptions";
 import logger from "../utils/logger";
 
@@ -12,7 +13,7 @@ router.post("/register", async (req: Request, res: Response) => {
     const { error } = userSchema.validate(req.body);
     if (error) {
       logger.error("Validation error: " + error.details[0].message);
-      res.status(400).json({
+      res.status(STATUS_CODES.BAD_REQUEST).json({
         status: "error",
         message: error.details[0].message,
       });
@@ -27,19 +28,19 @@ router.post("/register", async (req: Request, res: Response) => {
     const user = await createUser(req.body);
 
     logger.info("User created: " + user);
-    res.status(201).json({
+    res.status(STATUS_CODES.CREATED).json({
       status: "success",
       message: "User created successfully",
     });
   } catch (error) {
     if (error instanceof UserAlreadyExistsException) {
-      res.status(409);
+      res.status(STATUS_CODES.CONFLICT);
       logger.error(error);
       return;
     }
 
     logger.error("Internal server error");
-    res.status(500).json({
+    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: "error",
       message: "Internal server error",
     });
