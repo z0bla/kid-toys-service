@@ -1,8 +1,9 @@
-import { Router, Request, Response } from "express";
-import { userSchema, User } from "../models/user.model";
-import { getUserByEmail, createUser } from "../services/user.service";
-import logger from "../utils/logger";
+import { Request, Response, Router } from "express";
+
+import { userSchema } from "../models/user.model";
+import { createUser, getUserByEmail } from "../services/user.service";
 import { UserAlreadyExistsException } from "../utils/exceptions";
+import logger from "../utils/logger";
 
 const router = Router();
 

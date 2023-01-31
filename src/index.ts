@@ -1,7 +1,7 @@
-import prisma from "./utils/prisma";
-import logger from "./utils/logger";
-import app from "./server";
 import connectDb from "./domains/connectDB";
+import app from "./server";
+import logger from "./utils/logger";
+import prisma from "./utils/prisma";
 
 const port = "5000";
 

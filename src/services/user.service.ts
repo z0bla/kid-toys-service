@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
-import prisma from "../utils/prisma";
+
 import { User } from "../models/user.model";
+import prisma from "../utils/prisma";
 
 const saltRounds = 12;
 
