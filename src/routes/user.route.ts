@@ -12,10 +12,11 @@ router.post("/register", async (req: Request, res: Response) => {
   try {
     const { error } = userSchema.validate(req.body);
     if (error) {
-      logger.error("Validation error: " + error.details[0].message);
+      const errorMessage = error.details[0].message;
+      logger.error("Validation error: " + errorMessage);
       res.status(STATUS_CODES.BAD_REQUEST).json({
         status: "error",
-        message: error.details[0].message,
+        message: errorMessage,
       });
       return;
     }
