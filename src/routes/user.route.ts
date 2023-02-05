@@ -35,8 +35,11 @@ router.post("/register", async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof UserAlreadyExistsException) {
-      res.status(STATUS_CODES.CONFLICT);
-      logger.error(error.message);
+      logger.error("Error: " + error.message);
+      res.status(STATUS_CODES.CONFLICT).json({
+        status: "error",
+        message: error.message,
+      });
       return;
     }
 
