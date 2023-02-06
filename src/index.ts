@@ -10,10 +10,10 @@ connectDb();
 app.get("/", async (req, res) => {
   try {
     const users = await prisma.user.findMany();
-    logger.info(users);
+    logger.info(users.toString());
     res.json(users).end();
-  } catch (error) {
-    logger.error(error);
+  } catch (error: any) {
+    logger.error(error.message);
     res.end("Error occurred: " + error);
   }
 });
