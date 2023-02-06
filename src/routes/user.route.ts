@@ -28,7 +28,7 @@ router.post("/register", async (req: Request, res: Response) => {
 
     const user = await createUser(req.body);
 
-    logger.info("User created: " + user);
+    logger.info("User created: " + user.id);
     res.status(STATUS_CODES.CREATED).json({
       status: "success",
       message: "User created successfully",
