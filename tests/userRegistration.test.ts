@@ -1,6 +1,9 @@
+import nock from "nock";
 import request from "supertest";
+
 import app from "../src/server";
-import prisma from "../src/utils/prisma";
+
+const baseUrl = "http://localhost:5000";
 
 interface RequestData {
   firstName?: string;
@@ -18,16 +21,6 @@ async function sendRegisterPostRequest(data: RequestData) {
 
 describe("User Registration", () => {
   describe("Successful registration", () => {
-    afterAll(async () => {
-      await prisma.user.deleteMany({
-        where: {
-          email: {
-            contains: "test.com",
-          },
-        },
-      });
-    });
-
     test("User can be created with only email and password provided", async () => {
       const res = await sendRegisterPostRequest({
         email: "test1@test.com",
@@ -60,25 +53,19 @@ describe("User Registration", () => {
   });
 
   describe("Unsuccessful registration", () => {
-    // test("User can't use already taken email address", async () => {
-    //   await sendRegisterPostRequest({
-    //     email: "test@test.com",
-    //     password: "Test123Pass!",
-    //   });
+    test("User can't use already taken email address", async () => {
+      nock(baseUrl).post("/api/register").reply(409);
 
-    //   const res = sendRegisterPostRequest({
-    //     email: "test@test.com",
-    //     password: "Test123Pass!",
-    //   });
+      const data = {
+        email: "test@test.com",
+        password: "Test123Pass!",
+      };
 
-    //   expect(res.statusCode).toBe(409);
+      const res = await request(app).post("/api/register").send(data);
+      console.log(res.statusCode);
 
-    //   await prisma.user.delete({
-    //     where: {
-    //       email: "test@test.com",
-    //     },
-    //   });
-    // });
+      expect(res.statusCode).toBe(409);
+    });
 
     test("User can't register without providing an email address", async () => {
       const res = await sendRegisterPostRequest({
