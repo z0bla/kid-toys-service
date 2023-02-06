@@ -15,8 +15,7 @@ interface RequestData {
 }
 
 async function sendRegisterPostRequest(data: RequestData) {
-  const res = await request(app).post("/api/register").send(data);
-  return res;
+  return await request(app).post("/api/register").send(data);
 }
 
 describe("User Registration", () => {
