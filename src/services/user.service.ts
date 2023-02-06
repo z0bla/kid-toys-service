@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { User } from "../models/user.model";
+import {User} from "../models/user.model";
 import prisma from "../utils/prisma";
 
 const saltRounds = 12;
@@ -18,7 +18,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 export async function createUser(user: User): Promise<User> {
   const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
-  const newUser = (await prisma.user.create({
+  return (await prisma.user.create({
     data: {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -29,6 +29,4 @@ export async function createUser(user: User): Promise<User> {
       role: user.role,
     },
   })) as User;
-
-  return newUser;
 }

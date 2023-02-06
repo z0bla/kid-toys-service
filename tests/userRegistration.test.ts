@@ -1,7 +1,9 @@
-import nock from "nock";
 import request from "supertest";
 
 import app from "../src/server";
+import {prismaMock, PrismaUser} from "../singleton";
+import {Role, User} from "../src/models/user.model";
+import ResolvedValue = jest.ResolvedValue;
 
 const baseUrl = "http://localhost:5000";
 
@@ -54,117 +56,125 @@ describe("User Registration", () => {
 
   describe("Unsuccessful registration", () => {
     test("User can't use already taken email address", async () => {
-      nock(baseUrl).post("/api/register").reply(409);
-
       const data = {
         email: "test@test.com",
         password: "Test123Pass!",
       };
 
-      const res = await request(app).post("/api/register").send(data);
-      console.log(res.statusCode);
+      const user = {
+        id: 123,
+        firstName: "firstName",
+        lastName: "lastName",
+        phoneNumber: 123123123,
+        address: "asf",
+        email: "email@email.com",
+        password: "Password!12312",
+        role: Role.admin
+      } as PrismaUser;
 
-      expect(res.statusCode).toBe(409);
+      prismaMock.user.findUnique.mockResolvedValue(user as ResolvedValue<User>);
+
+      await request(app).post("/api/register").send(data).expect(409);
     });
 
-    test("User can't register without providing an email address", async () => {
-      const res = await sendRegisterPostRequest({
-        password: "Test123Pass!",
-      });
+     test("User can't register without providing an email address", async () => {
+       const res = await sendRegisterPostRequest({
+         password: "Test123Pass!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register without providing a password", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-      });
+     test("User can't register without providing a password", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with too long first name", async () => {
-      const res = await sendRegisterPostRequest({
-        firstName: "A really really really really really long name",
-        email: "test@test.com",
-        password: "Test123Pass!",
-      });
+     test("User can't register with too long first name", async () => {
+       const res = await sendRegisterPostRequest({
+         firstName: "A really really really really really long name",
+         email: "test@test.com",
+         password: "Test123Pass!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with too long last name", async () => {
-      const res = await sendRegisterPostRequest({
-        lastName: "A really really really really really long name",
-        email: "test@test.com",
-        password: "Test123Pass!",
-      });
+     test("User can't register with too long last name", async () => {
+       const res = await sendRegisterPostRequest({
+         lastName: "A really really really really really long name",
+         email: "test@test.com",
+         password: "Test123Pass!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with non-numeric phone number", async () => {
-      const res = await sendRegisterPostRequest({
-        phoneNumber: "12345aa",
-        email: "test@test.com",
-        password: "Test123Pass!",
-      });
+     test("User can't register with non-numeric phone number", async () => {
+       const res = await sendRegisterPostRequest({
+         phoneNumber: "12345aa",
+         email: "test@test.com",
+         password: "Test123Pass!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with invalid email address", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test",
-        password: "Test123Pass!",
-      });
+     test("User can't register with invalid email address", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test",
+         password: "Test123Pass!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with too short password", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-        password: "testTEST12!",
-      });
+     test("User can't register with too short password", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+         password: "testTEST12!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with invalid password (no lowercase letters)", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-        password: "TESTPASS123!",
-      });
+     test("User can't register with invalid password (no lowercase letters)", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+         password: "TESTPASS123!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with invalid password (no uppercase letters)", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-        password: "testpass123!",
-      });
+     test("User can't register with invalid password (no uppercase letters)", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+         password: "testpass123!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with invalid password (no numbers)", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-        password: "testTESTtest!",
-      });
+     test("User can't register with invalid password (no numbers)", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+         password: "testTESTtest!",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
 
-    test("User can't register with invalid password (no symbols)", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-        password: "testTEST12345",
-      });
+     test("User can't register with invalid password (no symbols)", async () => {
+       const res = await sendRegisterPostRequest({
+         email: "test@test.com",
+         password: "testTEST12345",
+       });
 
-      expect(res.statusCode).toBe(400);
-    });
+       expect(res.statusCode).toBe(400);
+     });
   });
 });
