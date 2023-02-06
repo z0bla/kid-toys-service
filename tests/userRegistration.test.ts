@@ -16,9 +16,8 @@ interface RequestData {
   password?: string;
 }
 
-async function sendRegisterPostRequest(data: RequestData) {
-  const res = await request(app).post("/api/register").send(data);
-  return res;
+function sendRegisterPostRequest(data: RequestData) {
+  return request(app).post("/api/register").send(data);
 }
 
 describe("User Registration", () => {
@@ -74,7 +73,7 @@ describe("User Registration", () => {
 
       prismaMock.user.findUnique.mockResolvedValue(user as ResolvedValue<User>);
 
-      await request(app).post("/api/register").send(data).expect(409);
+      await sendRegisterPostRequest(data).expect(409);
     });
 
      test("User can't register without providing an email address", async () => {
