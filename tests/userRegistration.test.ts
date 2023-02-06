@@ -1,7 +1,9 @@
-import nock from "nock";
 import request from "supertest";
 
 import app from "../src/server";
+import { prismaMock, PrismaUser } from "../singleton";
+import { Role, User } from "../src/models/user.model";
+import ResolvedValue = jest.ResolvedValue;
 
 const baseUrl = "http://localhost:5000";
 
@@ -14,8 +16,8 @@ interface RequestData {
   password?: string;
 }
 
-async function sendRegisterPostRequest(data: RequestData) {
-  return await request(app).post("/api/register").send(data);
+function sendRegisterPostRequest(data: RequestData) {
+  return request(app).post("/api/register").send(data);
 }
 
 describe("User Registration", () => {
@@ -53,17 +55,25 @@ describe("User Registration", () => {
 
   describe("Unsuccessful registration", () => {
     test("User can't use already taken email address", async () => {
-      nock(baseUrl).post("/api/register").reply(409);
-
       const data = {
         email: "test@test.com",
         password: "Test123Pass!",
       };
 
-      const res = await request(app).post("/api/register").send(data);
-      console.log(res.statusCode);
+      const user = {
+        id: 123,
+        firstName: "firstName",
+        lastName: "lastName",
+        phoneNumber: 123123123,
+        address: "asf",
+        email: "email@email.com",
+        password: "Password!12312",
+        role: Role.admin,
+      } as ResolvedValue<PrismaUser>;
 
-      expect(res.statusCode).toBe(409);
+      prismaMock.user.findUnique.mockResolvedValue(user);
+
+      await sendRegisterPostRequest(data).expect(409);
     });
 
     test("User can't register without providing an email address", async () => {
