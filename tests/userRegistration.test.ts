@@ -69,9 +69,9 @@ describe("User Registration", () => {
         email: "email@email.com",
         password: "Password!12312",
         role: Role.admin
-      } as PrismaUser;
+      } as ResolvedValue<PrismaUser>;
 
-      prismaMock.user.findUnique.mockResolvedValue(user as ResolvedValue<User>);
+      prismaMock.user.findUnique.mockResolvedValue(user);
 
       await sendRegisterPostRequest(data).expect(409);
     });
