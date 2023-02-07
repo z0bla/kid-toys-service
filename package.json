@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "test": "jest",
+    "test:watch": "jest --watch",
     "update": "npx npm-check-updates -u --target minor && npm install",
     "build": "tsc -p ."
   },

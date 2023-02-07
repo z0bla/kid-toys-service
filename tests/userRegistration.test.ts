@@ -1,12 +1,10 @@
 import request from "supertest";
 
 import app from "../src/server";
-import { prismaMock, PrismaUser } from "../singleton";
-import { Role, User } from "../src/models/user.model";
+import {prismaMock, PrismaUser} from "../singleton";
+import {Role} from "../src/models/user.model";
+import {STATUS_CODES} from "../src/utils/constants";
 import ResolvedValue = jest.ResolvedValue;
-import { Prisma } from "@prisma/client";
-
-const baseUrl = "http://localhost:5000";
 
 interface RequestData {
   firstName?: string;
@@ -22,169 +20,163 @@ function sendRegisterPostRequest(data: RequestData) {
 }
 
 describe("User Registration", () => {
+  const firstName = "John";
+  const lastName = "Doe";
+  const phoneNumber = 123123123;
+  const address = "123 Main Street, New York, USA";
+  const email = "test1@test.com";
+  const password = "Test123Pass!";
+
   describe("Successful registration", () => {
-    test("User can be created with only email and password provided", async () => {
-      const data = {
-        email: "test1@test.com",
-        password: "Test123Pass!",
-      };
+    it("should create 'user' with only email and password provided", async () => {
+      const data = {email, password};
+      const userToCreate = {email, password} as ResolvedValue<PrismaUser>;
 
-      const user = {
-        email: "test1@test.com",
-        password: "Test123Pass!",
-      } as ResolvedValue<PrismaUser>;
+      prismaMock.user.create.mockResolvedValue(userToCreate);
 
-      prismaMock.user.create.mockResolvedValue(user);
-
-      await sendRegisterPostRequest(data).expect(201);
+      await sendRegisterPostRequest(data).expect(STATUS_CODES.CREATED);
     });
 
-    test("User can be created with all details provided", async () => {
+    it("should create 'user' with all details provided", async () => {
       const data = {
-        firstName: "John",
-        lastName: "Doe",
-        phoneNumber: 1555123456,
-        address: "123 Main Street, New York, USA",
-        email: "test2@test.com",
-        password: "Test123Pass!",
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        email,
+        password,
       };
-
-      const user = {
-        firstName: "John",
-        lastName: "Doe",
-        phoneNumber: 1555123456,
-        address: "123 Main Street, New York, USA",
-        email: "test2@test.com",
-        password: "Test123Pass!",
+      const mockedUserFromPrisma = {
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        email,
+        password,
       } as ResolvedValue<PrismaUser>;
 
-      prismaMock.user.create.mockResolvedValue(user);
+      prismaMock.user.create.mockResolvedValue(mockedUserFromPrisma);
 
-      await sendRegisterPostRequest(data).expect(201);
+      await sendRegisterPostRequest(data).expect(STATUS_CODES.CREATED);
     });
   });
 
   describe("Unsuccessful registration", () => {
-    test("User can't use already taken email address", async () => {
-      const data = {
-        email: "test@test.com",
-        password: "Test123Pass!",
-      };
-
-      const user = {
+    it("should not be able to register with already taken email", async () => {
+      const data = {email, password};
+      const mockedExistingUser = {
         id: 123,
-        firstName: "firstName",
-        lastName: "lastName",
-        phoneNumber: 123123123,
-        address: "asf",
-        email: "email@email.com",
-        password: "Password!12312",
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        email,
+        password,
         role: Role.admin,
       } as ResolvedValue<PrismaUser>;
 
-      prismaMock.user.findUnique.mockResolvedValue(user);
+      prismaMock.user.findUnique.mockResolvedValue(mockedExistingUser);
 
-      await sendRegisterPostRequest(data).expect(409);
+      await sendRegisterPostRequest(data).expect(STATUS_CODES.CONFLICT);
     });
 
-    test("User can't register without providing an email address", async () => {
-      const res = await sendRegisterPostRequest({
-        password: "Test123Pass!",
-      });
-
-      expect(res.statusCode).toBe(400);
+    it("should not be able to register user without email", async () => {
+      await sendRegisterPostRequest({password}).expect(STATUS_CODES.BAD_REQUEST)
+        .expect(body => {
+          const text = JSON.parse(body.text);
+          expect(text.message).toBe('"email" is required');
+        });
     });
 
-    test("User can't register without providing a password", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test.com",
-      });
-
-      expect(res.statusCode).toBe(400);
+    it("should not be able to register user without password", async () => {
+      await sendRegisterPostRequest({email}).expect(STATUS_CODES.BAD_REQUEST)
+        .expect(body => {
+          const text = JSON.parse(body.text);
+          expect(text.message).toBe('"password" is required');
+        });
     });
 
-    test("User can't register with too long first name", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with too long firstName", async () => {
+      await sendRegisterPostRequest({
         firstName: "A really really really really really long name",
-        email: "test@test.com",
-        password: "Test123Pass!",
+        email,
+        password
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"firstName" length must be less than or equal to 45 characters long');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with too long last name", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with too long lastName", async () => {
+      await sendRegisterPostRequest({
         lastName: "A really really really really really long name",
-        email: "test@test.com",
-        password: "Test123Pass!",
+        email,
+        password
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"lastName" length must be less than or equal to 45 characters long');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with non-numeric phone number", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with invalid phone number", async () => {
+      await sendRegisterPostRequest({
         phoneNumber: "12345aa",
-        email: "test@test.com",
-        password: "Test123Pass!",
+        email,
+        password
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"phoneNumber" must be a number');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with invalid email address", async () => {
-      const res = await sendRegisterPostRequest({
-        email: "test@test",
-        password: "Test123Pass!",
-      });
-
-      expect(res.statusCode).toBe(400);
-    });
-
-    test("User can't register with too short password", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with too short password", async () => {
+      await sendRegisterPostRequest({
         email: "test@test.com",
         password: "testTEST12!",
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"password" with value \"testTEST12!\" fails to match the required pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$/');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with invalid password (no lowercase letters)", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with invalid password (no lowercase letters)", async () => {
+      await sendRegisterPostRequest({
         email: "test@test.com",
         password: "TESTPASS123!",
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"password" with value \"TESTPASS123!\" fails to match the required pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$/');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with invalid password (no uppercase letters)", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with invalid password (no uppercase letters)", async () => {
+      await sendRegisterPostRequest({
         email: "test@test.com",
         password: "testpass123!",
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"password" with value \"testpass123!\" fails to match the required pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$/');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with invalid password (no numbers)", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with invalid password (no numbers)", async () => {
+      await sendRegisterPostRequest({
         email: "test@test.com",
         password: "testTESTtest!",
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"password" with value \"testTESTtest!\" fails to match the required pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$/');
       });
-
-      expect(res.statusCode).toBe(400);
     });
 
-    test("User can't register with invalid password (no symbols)", async () => {
-      const res = await sendRegisterPostRequest({
+    it("should not be able to register with invalid password (no symbols)", async () => {
+      await sendRegisterPostRequest({
         email: "test@test.com",
         password: "testTEST12345",
+      }).expect(STATUS_CODES.BAD_REQUEST).expect(body => {
+        const text = JSON.parse(body.text);
+        expect(text.message).toBe('"password" with value \"testTEST12345\" fails to match the required pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$/');
       });
-
-      expect(res.statusCode).toBe(400);
     });
   });
 });
