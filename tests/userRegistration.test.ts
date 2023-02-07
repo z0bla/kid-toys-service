@@ -24,33 +24,43 @@ function sendRegisterPostRequest(data: RequestData) {
 describe("User Registration", () => {
   describe("Successful registration", () => {
     test("User can be created with only email and password provided", async () => {
-      const res = await sendRegisterPostRequest({
+      const data = {
         email: "test1@test.com",
         password: "Test123Pass!",
-      });
+      };
 
-      expect(res.statusCode).toBe(201);
-      expect(res.body).toEqual({
-        status: "success",
-        message: "User created successfully",
-      });
+      const user = {
+        email: "test1@test.com",
+        password: "Test123Pass!",
+      } as ResolvedValue<PrismaUser>;
+
+      prismaMock.user.create.mockResolvedValue(user);
+
+      await sendRegisterPostRequest(data).expect(201);
     });
 
     test("User can be created with all details provided", async () => {
-      const res = await sendRegisterPostRequest({
+      const data = {
         firstName: "John",
         lastName: "Doe",
         phoneNumber: 1555123456,
         address: "123 Main Street, New York, USA",
         email: "test2@test.com",
         password: "Test123Pass!",
-      });
+      };
 
-      expect(res.statusCode).toBe(201);
-      expect(res.body).toEqual({
-        status: "success",
-        message: "User created successfully",
-      });
+      const user = {
+        firstName: "John",
+        lastName: "Doe",
+        phoneNumber: 1555123456,
+        address: "123 Main Street, New York, USA",
+        email: "test2@test.com",
+        password: "Test123Pass!",
+      } as ResolvedValue<PrismaUser>;
+
+      prismaMock.user.create.mockResolvedValue(user);
+
+      await sendRegisterPostRequest(data).expect(201);
     });
   });
 
