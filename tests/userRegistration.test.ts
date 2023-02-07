@@ -4,6 +4,7 @@ import app from "../src/server";
 import { prismaMock, PrismaUser } from "../singleton";
 import { Role, User } from "../src/models/user.model";
 import ResolvedValue = jest.ResolvedValue;
+import { Prisma } from "@prisma/client";
 
 const baseUrl = "http://localhost:5000";
 
@@ -69,9 +70,9 @@ describe("User Registration", () => {
         email: "email@email.com",
         password: "Password!12312",
         role: Role.admin,
-      } as PrismaUser;
+      } as ResolvedValue<PrismaUser>;
 
-      prismaMock.user.findUnique.mockResolvedValue(user as ResolvedValue<User>);
+      prismaMock.user.findUnique.mockResolvedValue(user);
 
       await sendRegisterPostRequest(data).expect(409);
     });
