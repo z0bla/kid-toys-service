@@ -13,4 +13,14 @@ model user {
   id        Int  @id @default(autoincrement())
   firstName String? @default("")
   lastName  String? @default("")
+  phoneNumber Int?
+  address   String?
+  email     String @unique
+  password  String
+  role      Role    @default(USER)
+}
+
+enum Role {
+  USER
+  ADMIN
 }
