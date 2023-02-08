@@ -1,13 +1,10 @@
+require("dotenv").config();
 const winston = require("winston");
 const { combine, timestamp, json, errors } = winston.format;
 const { Logtail } = require("@logtail/node");
 const { LogtailTransport } = require("@logtail/winston");
 
-console.log("logger.ts file");
-console.log(process.env.DATABASE_URL);
-console.log("\n\n\n");
-
-const logtail = new Logtail("fLhHrFNbdBe9DFFqSyp9RZZk");
+const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
 
 const destinations =
   process.env.NODE_ENV === "production"
@@ -25,12 +22,3 @@ export default winston.createLogger({
   exceptionHandlers: destinations,
   rejectionHandlers: destinations,
 });
-
-// export default {
-//   info: (message: String) => {
-//     console.info(message);
-//   },
-//   error: (message: String) => {
-//     console.error(message);
-//   },
-// };
