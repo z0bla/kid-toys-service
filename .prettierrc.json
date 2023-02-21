@@ -1,1 +1,14 @@
-{}
+{
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "domains",
+    "models",
+    "routes",
+    "services",
+    "utils",
+    "^[./]",
+    "^[../]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

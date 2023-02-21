@@ -1,7 +1,9 @@
 import { Request, Response, Router } from "express";
 
 import { userSchema } from "../models/user.model";
+
 import { createUser, getUserByEmail } from "../services/user.service";
+
 import { STATUS_CODES } from "../utils/constants";
 import { UserAlreadyExistsException } from "../utils/exceptions";
 import logger from "../utils/logger";
