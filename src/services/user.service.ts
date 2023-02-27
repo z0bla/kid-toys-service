@@ -31,3 +31,7 @@ export async function createUser(user: User): Promise<User> {
     },
   })) as User;
 }
+
+export async function isPasswordValid(user: User, password: string) {
+  return await bcrypt.compare(user.password, password);
+}
