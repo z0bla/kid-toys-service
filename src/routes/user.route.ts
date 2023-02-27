@@ -68,7 +68,7 @@ router.post("/login", async (req: Request, res: Response) => {
 
   const token = generateAccessToken({ id: user.id, role: user.role });
 
-  res.status(STATUS_CODES.OK).json(token).end();
+  res.status(STATUS_CODES.OK).json({ token }).end();
 });
 
 export default router;
