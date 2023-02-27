@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { User } from "../models/user.model";
 
 import prisma from "../utils/prisma";
+
+require("dotenv").config();
 
 const saltRounds = 12;
 
@@ -34,4 +37,10 @@ export async function createUser(user: User): Promise<User> {
 
 export async function isPasswordValid(user: User, password: string) {
   return await bcrypt.compare(user.password, password);
+}
+
+export function generateAccessToken(data: { id: number; role: string }) {
+  return jwt.sign(data, process.env.TOKEN_SECRET as string, {
+    expiresIn: process.env.TOKEN_EXPIRES_IN,
+  });
 }
