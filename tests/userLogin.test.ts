@@ -23,7 +23,7 @@ describe("User login", () => {
   });
 
   it("Should not log in non existing user", async () => {
-    const data = { email: "test2@test.com", password: "Test123456Pass?" };
+    const data = { email, password };
 
     await request(app)
       .post("/api/login")
