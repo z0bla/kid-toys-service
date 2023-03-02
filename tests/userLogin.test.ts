@@ -14,9 +14,6 @@ describe("User login", () => {
   const password = "Test123Pass!";
 
   it("Should log in an existing user", async () => {
-    const email = "test1@test.com";
-    const password = "Test123Pass!";
-
     const data = { email, password };
     const existingUser = { email, password } as ResolvedValue<PrismaUser>;
 
