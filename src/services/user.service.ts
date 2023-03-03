@@ -39,7 +39,10 @@ export async function isPasswordValid(
   user: User,
   password: string
 ): Promise<boolean> {
-  return await bcrypt.compare(user.password, password);
+  if (user) {
+    return await bcrypt.compare(user.password, password);
+  }
+  return false;
 }
 
 export function generateAccessToken(data: {

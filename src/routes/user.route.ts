@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 
-import { userSchema } from "../models/user.model";
+import { User, userSchema } from "../models/user.model";
 
 import {
   createUser,
@@ -62,7 +62,9 @@ router.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await getUserByEmail(email);
-  if (!user || !isPasswordValid(user, password)) {
+  const isValidPassword = await isPasswordValid(user as User, password);
+
+  if (!user || !isValidPassword) {
     return res.status(STATUS_CODES.UNAUTHORIZED).send("Unauthorized");
   }
 
