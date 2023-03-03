@@ -1,8 +1,13 @@
 import { Request, Response, Router } from "express";
 
-import { userSchema } from "../models/user.model";
+import { User, userSchema } from "../models/user.model";
 
-import { createUser, getUserByEmail } from "../services/user.service";
+import {
+  createUser,
+  generateAccessToken,
+  getUserByEmail,
+  isPasswordValid,
+} from "../services/user.service";
 
 import { STATUS_CODES } from "../utils/constants";
 import { UserAlreadyExistsException } from "../utils/exceptions";
@@ -51,6 +56,21 @@ router.post("/register", async (req: Request, res: Response) => {
       message: "Internal server error",
     });
   }
+});
+
+router.post("/login", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const user = await getUserByEmail(email);
+  const isValidPassword = await isPasswordValid(user as User, password);
+
+  if (!user || !isValidPassword) {
+    return res.status(STATUS_CODES.UNAUTHORIZED).send("Unauthorized");
+  }
+
+  const token = generateAccessToken({ id: user.id, role: user.role });
+
+  res.status(STATUS_CODES.OK).json({ token }).end();
 });
 
 export default router;
