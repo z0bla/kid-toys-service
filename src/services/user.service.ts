@@ -35,11 +35,17 @@ export async function createUser(user: User): Promise<User> {
   })) as User;
 }
 
-export async function isPasswordValid(user: User, password: string) {
+export async function isPasswordValid(
+  user: User,
+  password: string
+): Promise<boolean> {
   return await bcrypt.compare(user.password, password);
 }
 
-export function generateAccessToken(data: { id: number; role: string }) {
+export function generateAccessToken(data: {
+  id: number;
+  role: string;
+}): string {
   return jwt.sign(data, process.env.TOKEN_SECRET as string, {
     expiresIn: process.env.TOKEN_EXPIRES_IN,
   });
