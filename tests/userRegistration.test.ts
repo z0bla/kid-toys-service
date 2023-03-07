@@ -77,7 +77,6 @@ describe("User Registration", () => {
 
       await sendRegisterPostRequest(data);
 
-      expect(sendConfirmationEmail).toHaveBeenCalled();
       expect(sendConfirmationEmail).toHaveBeenCalledWith(email);
     });
   });
