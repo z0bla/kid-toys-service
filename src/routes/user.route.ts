@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 
 import { User, userSchema } from "../models/user.model";
 
+import { sendConfirmationEmail } from "../services/email.service";
 import {
   createUser,
   generateAccessToken,
@@ -36,6 +37,7 @@ router.post("/register", async (req: Request, res: Response) => {
     const user = await createUser(req.body);
 
     logger.info("User created: " + user.id);
+    sendConfirmationEmail(user.email);
     res.status(STATUS_CODES.CREATED).json({
       status: "success",
       message: "User created successfully",
