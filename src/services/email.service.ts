@@ -16,9 +16,8 @@ export function sendConfirmationEmail(email: string) {
 
   sgMail
     .send(message)
-    .then((response: any) => {
-      logger.info(response[0].statusCode);
-      logger.info(response[0].headers);
+    .then(() => {
+      logger.info("Email sent successfully");
     })
     .catch((error: any) => {
       logger.error(error);
