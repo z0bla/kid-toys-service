@@ -6,7 +6,7 @@ const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export function sendConfirmationEmail(email: string) {
+export function sendConfirmationEmail(email: string): void {
   const message = {
     to: email,
     from: process.env.SENDGRID_FROM_ADDRESS,
