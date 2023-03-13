@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
+import { validate } from "../middleware/schemaValidation";
 
-import { User, userSchema } from "../models/user.model";
+import { User } from "../models/user.model";
 
 import { sendConfirmationEmail } from "../services/email.service";
 import {
@@ -16,19 +17,8 @@ import logger from "../utils/logger";
 
 const router = Router();
 
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register", validate, async (req: Request, res: Response) => {
   try {
-    const { error } = userSchema.validate(req.body);
-    if (error) {
-      const errorMessage = error.details[0].message;
-      logger.error("Validation error: " + errorMessage);
-      res.status(STATUS_CODES.BAD_REQUEST).json({
-        status: "error",
-        message: errorMessage,
-      });
-      return;
-    }
-
     const existingUser = await getUserByEmail(req.body.email);
     if (existingUser) {
       throw new UserAlreadyExistsException();
